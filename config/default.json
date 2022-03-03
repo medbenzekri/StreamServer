@@ -1,0 +1,9 @@
+{
+"END_POINT":"127.0.0.1",
+"PORT":9000,
+"MINIO_BUCKET":"video",
+"SECRET_KEY":"minioadmin",
+"ACCESS_KEY":"minioadmin",
+"USE_SSL":false,
+"Bucket":"video"
+}
