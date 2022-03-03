@@ -1,26 +1,15 @@
 var express = require('express');
 var router = express.Router();
-var Minio = require('minio');
-var videohandler=require('./handlers/video_handler');
-let bucket= "video"
-var minioClient = new Minio.Client({
-    endPoint: '127.0.0.1',
-    port: 9000,
-    useSSL: false,
-    accessKey: 'minioadmin',
-    secretKey: 'minioadmin'
-});
+var {Videoinfo}=require('./handlers/video_handler');
+var Client=require("../minio_client");
+var bucket= require('config').get("Bucket");
 
- 
 router.get('/',async function(req, res, next) {
-    videos=[]
-    let videoStream=await minioClient.listObjects(bucket).on("data", function (video) {
-        
-        videos.push(video)
-    })
+    var videos=[]
+    let videoStream=await Client.listObjects(bucket).
+    on("data", (video)=>videos.push(Videoinfo(video)));
     videoStream.on("end",()=> res.json(videos))
-    
-    
   });
 
-  module.exports = router;
+  exports.router=router;
+ 
