@@ -3,13 +3,18 @@ var router = express.Router();
 var {Videoinfo}=require('./handlers/video_handler');
 var Client=require("../minio_client");
 var bucket= require('config').get("Bucket");
+var async = require("async");
+
 
 router.get('/',async function(req, res, next) {
     var videos=[]
-    let videoStream=await Client.listObjects(bucket).
-    on("data", (video)=>videos.push(Videoinfo(video)));
-    videoStream.on("end",()=> res.json(videos))
+    var streamQueue = async.queue(
+      async (video)=>videos.push(await Videoinfo(video))
+    );
+    Client.listObjects(bucket).
+      on("data",streamQueue.push);
+      streamQueue.drain(()=>res.json(videos))
   });
 
   exports.router=router;
- 
+  
