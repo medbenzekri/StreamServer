@@ -4,26 +4,25 @@ const stream = require('stream');
 const Client= require('../../minio_client');
 var bucket= require('config').get("Bucket");
 const { getVideoDurationInSeconds } = require('get-video-duration')
- 
-function Videoinfo(video){   
+
+async function Videoinfo(video){   
+  
   return {
     title:video.name ,
     size:`${byteSize(video.size)}`,
-    duration:getduration(video.name)
+    duration:await getduration(video.name)
   }
 }
 
 async function getduration(name){
   
 var offset = 0;
-var minutes,seconds;
-getVideoDurationInSeconds(await Client.getPartialObject(bucket,name,offset)).then((duration) => {
-  duration = (duration/60);
-  minutes = duration - (duration % 1);
-  seconds = (duration % 1)*60;
-  duration = minutes +":"+seconds.toFixed(0);
-  return console.log(duration);
-})
-  }
+var duration = parseInt(
+              await getVideoDurationInSeconds( 
+               await Client.getPartialObject(bucket,name,offset)))
 
+return `${String(~~(duration/60)).padStart(2,"0")}:${String(duration%60).padStart(2,"0")}`
+
+
+}
 module.exports = { Videoinfo };
