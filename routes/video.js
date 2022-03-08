@@ -18,10 +18,21 @@ router.get('/',async function(req, res, next) {
   });
 
 router.get('/thumbnail/:id',async(req,res,next)=>{
+   var path={
+       path:require('config').get("ffmpeg")
+     }
   var id=decodeURIComponent(req.params.id)
-  await genThumbnail(await Client.getPartialObject(bucket,id,0),res,"150x100")
-  res.on("finish",res.end)
   
+
+ var  thumbstream=await genThumbnail(null,null,"400x?",path);
+   await (await Client.getObject(bucket,id))
+   .pipe(thumbstream)
+   .pipe(res)
+   thumbstream.on("error",(error)=>console.log("error"))
+
+
+
+
 })
 
 
