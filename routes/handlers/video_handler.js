@@ -1,19 +1,20 @@
 var {spawn}= require('child_process');
 const byteSize = require('byte-size');
-const stream = require('stream');
 const Client= require('../../minio_client');
 var bucket= require('config').get("Bucket");
-const genThumbnail = require('simple-thumbnail');
+var host=require('config').get("IP");
+const genThumbnail = require('simple-thumbnail')  
 const { getVideoDurationInSeconds } = require('get-video-duration');
-const pathToFfmpeg = require('ffmpeg-static');
-
+const { Server } = require('http');
 async function Videoinfo(video){   
   
   return {
     title:video.name ,
     size:`${byteSize(video.size)}`,
     duration:await getduration(video.name),
-    thumbnail:await download(video.name)
+    thumbnail:await getthumbnail(video.name),
+
+    
   }
 }
 
@@ -28,16 +29,10 @@ return `${String(~~(duration/60)).padStart(2,"0")}:${String(duration%60).padStar
 
 
 }
+///bla bla bla
+async function getthumbnail(name){
 
-async function download (name) {
-  const ffmpeg = require('ffmpeg-static')
-  var offset = 0;
-  var output = new stream.Writable();
-  output = await genThumbnail(await Client.getPartialObject(bucket,name,offset),'150x',{
-    path:ffmpeg.path,
-  })
-  console.log('Done')
-  return output
+  return `${host}video/thumbnail/${encodeURIComponent(name)}`;
   
 }
 

@@ -5,5 +5,7 @@
 "SECRET_KEY":"minioadmin",
 "ACCESS_KEY":"minioadmin",
 "USE_SSL":false,
-"Bucket":"video"
+"Bucket":"video",
+"IP":"http://localhost:3000/",
+"ffmpeg":"/home/yazid/Documents/ffmpeg-3.4.2-64bit-static/ffmpeg"
 }
