@@ -28,7 +28,11 @@ router.get('/thumbnail/:id',async(req,res,next)=>{
    await (await Client.getObject(bucket,id))
    .pipe(thumbstream)
    .pipe(res)
-   thumbstream.on("error",(error)=>console.log("error"))
+   thumbstream.on("error",(error)=>{
+     if(error.code!="EPIPE")
+      console.log("error")
+     
+    })
 
 
 
