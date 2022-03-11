@@ -3,7 +3,7 @@ class minio {
    constructor(){
       this.Minio= require("minio")
       this.Client=new this.Minio.Client({
-         endPoint: config.get("END_POINT"),
+         endPoint: process.env.HOST||config.get("END_POINT"),
          port:  config.get("PORT"),
          useSSL: config.get("USE_SSL"),
          accessKey: config.get("ACCESS_KEY"),
