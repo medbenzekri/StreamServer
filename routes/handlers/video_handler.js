@@ -30,7 +30,7 @@ return `${String(~~(duration/60)).padStart(2,"0")}:${String(duration%60).padStar
 
 
 }
-///bla bla bla
+
 async function getthumbnail(name){
 
   return `${host}video/thumbnail/${encodeURIComponent(name)}`;

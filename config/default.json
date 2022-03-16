@@ -7,5 +7,5 @@
 "USE_SSL":false,
 "Bucket":"video",
 "IP":"http://localhost:3000/",
-"ffmpeg":"/home/yazid/Documents/ffmpeg-3.4.2-64bit-static/ffmpeg"
+"ffmpeg":"/home/medbenzekri/Downloads/Programs/ffmpeg-3.4.2-64bit-static/ffmpeg"
 }
