@@ -7,6 +7,8 @@ services:
       - "3000:3000"
     environment:
       - "HOST=storage"
+      - "FFMPEG_PATH=/ffmpeg"
+      - "FFPROBE_PATH=/ffprobe"
     volumes:
       - ./:/app
   storage:
