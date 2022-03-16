@@ -6,5 +6,5 @@ router.post('/', function(req, res, next) {
     console.log(req.body);
   res.send('hello');
 });
-
+ 
 module.exports = router;
