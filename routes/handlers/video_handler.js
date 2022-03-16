@@ -6,7 +6,7 @@ var host=require('config').get("IP");
 const genThumbnail = require('simple-thumbnail') ; 
 const { getVideoDurationInSeconds } = require('get-video-duration');
 const async= require('async');
-
+var FfmpegCommand = require('fluent-ffmpeg');
 async function Videoinfo(video){   
   //gets video info from object storage 
   return {
@@ -50,22 +50,14 @@ async function Videos(req,res){
 }
 
 async function thumbnail(req,res){
-  //send thumbnail of a video 
-  var path={
-      path:require('config').get("ffmpeg")
-    }
- var id=decodeURIComponent(req.params.id)
- 
-
-var  thumbstream=await genThumbnail(null,null,"400x?",path);
-  await (await Client.getObject(bucket,id))
-  .pipe(thumbstream)
-  .pipe(res)
-  thumbstream.on("error",(error)=>{
-    if(error.code!="EPIPE")
-     console.log("error")
-    
-   })
+  //   //send thumbnail of a video 
+  var path=require('config').get("ffmpeg")
+  var ffmpeg = new FfmpegCommand();
+  FfmpegCommand.setFfmpegPath(path);
+  var id=decodeURIComponent(req.params.id)
+  ffmpeg.input(await Client.getObject(bucket,id))
+  .outputOptions("-ss", "00:00:01.000", "-vframes" ,"1")
+  .pipe(res);
 
 
 
