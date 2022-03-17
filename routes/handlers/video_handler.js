@@ -50,15 +50,15 @@ async function Videos(req,res){
 }
 
 async function thumbnail(req,res){
-  //   //send thumbnail of a video 
-  var path=require('config').get("ffmpeg")
-  var ffmpeg = new FfmpegCommand();
-  FfmpegCommand.setFfmpegPath(path);
+  //   //send thumbnail of a video
+  res.contentType("png");
+  var ffmpeg = FfmpegCommand();
   var id=decodeURIComponent(req.params.id)
-  ffmpeg.input(await Client.getObject(bucket,id))
-  .outputOptions("-ss", "00:00:01.000", "-vframes" ,"1")
-  .pipe(res);
-
+  ffmpeg.input(await Client.getPartialObject(bucket,id,0))
+  .seekInput("00:00:01.000")
+  .outputFormat("image2")
+  .on("error",()=>console.log("error"))
+  .pipe(res,{end:true});
 
 
 
