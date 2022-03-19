@@ -50,7 +50,7 @@ async function Videos(req,res){
 }
 
 async function thumbnail(req,res){
-  //   //send thumbnail of a video
+  //   send thumbnail of a video
   res.contentType("png");
   var ffmpeg = FfmpegCommand();
   var id=decodeURIComponent(req.params.id)
